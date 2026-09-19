@@ -1,5 +1,4 @@
 package com.vasanth.Tech_Store.Service;
-import com.vasanth.Tech_Store.Exception.categoryNotFoundException;
 import com.vasanth.Tech_Store.Exception.productNotFoundException;
 import com.vasanth.Tech_Store.Model.Category;
 import com.vasanth.Tech_Store.Model.Product;
