@@ -30,7 +30,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String>hadleWrongEmails(UsernameNotFoundException e)
     {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Email or email");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Email or password");
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -38,7 +38,6 @@ public class GlobalExceptionHandler
     {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Password or email");
     }
-
 
     @ExceptionHandler (MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidations (MethodArgumentNotValidException e)
@@ -53,6 +52,5 @@ public class GlobalExceptionHandler
          ErrorResponse errorResponse = new ErrorResponse(404,"Not Validation",errors);
          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
-
 }
 

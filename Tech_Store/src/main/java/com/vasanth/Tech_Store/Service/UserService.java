@@ -8,6 +8,7 @@ import com.vasanth.Tech_Store.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,14 @@ public class UserService
     UserRepo userRepo;
     PasswordEncoder passwordEncoder;
     AuthenticationManager authenticationManager;
+    JwtService jwtService;
 
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager)
+    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder,AuthenticationManager authenticationManager,JwtService jwtService)
     {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public String register(RegisterRequest registerRequest)
@@ -39,13 +42,11 @@ public class UserService
 
     public String login(LoginRequest loginRequest)
     {
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                          loginRequest.getEmail(),
                          loginRequest.getPassword())
                            );
-        return "Login Successfully";
+        return jwtService.generateToken(authentication);
     }
-
-
 }
