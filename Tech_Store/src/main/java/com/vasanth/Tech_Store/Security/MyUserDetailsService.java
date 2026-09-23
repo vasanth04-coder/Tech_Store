@@ -3,12 +3,11 @@ package com.vasanth.Tech_Store.Security;
 import com.vasanth.Tech_Store.Model.Users;
 import com.vasanth.Tech_Store.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Collections;
 
@@ -23,21 +22,22 @@ public class MyUserDetailsService implements UserDetailsService
         this.userRepo = userRepo;
     }
 
+
     @Override
-    public UserDetails loadUserByUsername(String name)throws UsernameNotFoundException
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-         Users user  =  userRepo.findByEmail(name);
+        Users users = userRepo.findByEmail(username);
 
-         if(user == null)
-         {
-             throw new UsernameNotFoundException("user Not found");
-         }
+        if (users == null)
+        {
+            throw new UsernameNotFoundException("User Not Found");
+        }
 
-         return new org.springframework.security.core.userdetails.User(
-                 user.getEmail(),
-                 user.getPassword(),
-                 Collections.emptyList()
-         );
+        return new User(
+                users.getEmail(),
+                users.getPassword(),
+                Collections.emptyList()
+        );
+
     }
-
 }

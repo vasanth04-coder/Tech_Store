@@ -31,22 +31,23 @@ public class UserService
 
     public String register(RegisterRequest registerRequest)
     {
-      Users user = new Users();
-      user.setName(registerRequest.getName());
-      user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-      user.setEmail(registerRequest.getEmail());
-      user.setRole(Role.USER);
-      userRepo.save(user);
-      return "Registerd Successfully..";
+      Users users = new Users();
+      users.setName(registerRequest.getName());
+      users.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+      users.setEmail(registerRequest.getEmail());
+      users.setRole(Role.USER);
+      userRepo.save(users);
+      return "Registered Successfully..";
     }
 
     public String login(LoginRequest loginRequest)
     {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                         loginRequest.getEmail(),
-                         loginRequest.getPassword())
-                           );
+       Authentication authentication = authenticationManager.authenticate(
+               new UsernamePasswordAuthenticationToken(
+               loginRequest.getEmail(),
+               loginRequest.getPassword())
+               );
+
         return jwtService.generateToken(authentication);
     }
 }

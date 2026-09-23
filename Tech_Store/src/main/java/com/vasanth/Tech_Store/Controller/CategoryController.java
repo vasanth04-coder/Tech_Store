@@ -51,5 +51,4 @@ public class CategoryController
     {
         return new ResponseEntity<>(categoryService.updateCategory(category,categoryId),HttpStatus.OK);
     }
-
 }

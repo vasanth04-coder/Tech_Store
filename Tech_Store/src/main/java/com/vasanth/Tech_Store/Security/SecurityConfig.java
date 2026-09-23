@@ -1,5 +1,6 @@
 package com.vasanth.Tech_Store.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,20 +10,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig
 {
+    @Autowired
+    JwtFilter jwtFilter;
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
-        return new BCryptPasswordEncoder() ;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception
     {
-        return config.getAuthenticationManager();
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
@@ -38,6 +43,12 @@ public class SecurityConfig
                 .anyRequest().authenticated()
 
         );
+
+        http.addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
+        );
+
         return http.build();
     }
 }
